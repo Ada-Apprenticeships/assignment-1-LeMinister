@@ -1,5 +1,9 @@
 function temperatureConversion(temperature, fromScale, toScale){
-
+ function convertTemperature(temp, convertFrom, convertTo) {
+    if (isint(temp))
+    convertFrom = convertFrom.toLowerCase();
+    convertTo = convertTo.toLowerCase();
+ }
 // TODO: Validate the input:
 //        - Check if the temperature is null, undefined, or a non-numeric string. If so, throw an error "Invalid temperature input".
 //        - Convert the temperature to a number.
