@@ -3,7 +3,7 @@ function shuffleAndDeal(numPlayers, cardsPerPlayer, numDecks = 1) {
     const number = ['Ace', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'Jack', 'Queen', 'King'];
     const suit = ['Spades', 'Diamonds', 'Hearts', 'Clubs'];
 
-        // validates if parameters given are in correct format
+        // checks if parameters given are in correct format
         if (typeof numPlayers !== 'number' || numPlayers == null || numPlayers <= 0 || !Number.isInteger(numPlayers)) {
             throw new Error('Number of players must be a positive integer.');
         }
