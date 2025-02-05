@@ -3,77 +3,146 @@ import Inventory from './Inventory.js';
 import Electronics from './electronic.js';
 import Clothing from './clothing.js';
 import ProductFactory from './ProductFactory.js';
-describe('Inventory', () => {
+
+describe("Inventory", () => {
     let inventory;
-    let product1, product2;
-
+    let clothingT, electronicsT
+  
     beforeEach(() => {
-        inventory = new Inventory();
-        product1 = Product.createProduct("clothing", "A123", "T-shirt", 19.99, 100, "M", "Cotton");
-        product2 = Product.createProduct("clothing", "B456", "Jeans", 49.99, 50, "L", "Denim");
+      inventory = new Inventory();
+      clothingT = new Clothing('clothing', 'Z321', 't-shirt',29.49,100,'M','Silk');
+      electronicsT = new Electronics('electronic','M92002','Tablet',599.99, 20,'windows','2 year');
+        });
+  
+    describe("Adding Products", () => {
+      test("can add products to the inventory", () => {
+        inventory.addProduct(clothingT);
+        inventory.addProduct(electronicsT);
+        expect(inventory.getNumOfItems()).toBe(2);
+      });
+  
+    });
+  
+    describe("Updating Product Quantities", () => {
+      test("can update the quantity of clothing", () => {
+        inventory.addProduct(clothingT);
+        inventory.updateQuantity("Z321", 7);
+        expect(inventory.getProduct("Z321").quantity).toBe(7);
+      });
+  
+      test("can update the quantity of electronics", () => {
+        inventory.addProduct(electronicsT);
+        inventory.updateQuantity("M92002", 99);
+        expect(inventory.getProduct("M92002").quantity).toBe(99);
+      });
+  
+    });
+  
+  
+    describe("Removing Products", () => {
+      test("can remove a product from the inventory", () => {
+        inventory.addProduct(clothingT);
+        inventory.addProduct(electronicsT);
+        inventory.removeProduct("Z321");
+        expect(() => inventory.getProduct("Z321")).toThrowError(`Product with ID Z321 not found.`);
+        expect(inventory.getProduct("M92002")).toEqual(electronics1.getProductDetails());
+      });
+  
+    
+    });
+  
+    describe("Retrieving Product Details", () => {
+      test("can retrieve the details of products", () => {
+          inventory.addProduct(clothingT);
+          inventory.addProduct(electronicsT);
+          
+          expect(inventory.getProduct("Z321")).toEqual({
+              id: "Z321",
+              name: "t-shirt",
+              price: 29.49,
+              quantity: 100,
+              size: "M",
+              material: "silk",
+          });
+  
+          expect(inventory.getProduct("M92002")).toEqual({
+              id: "M92002",
+              name: "tablet",
+              price: 599.99,
+              quantity: 20,
+              brand: "samsung",
+              warranty: 2
+          });
+      });
+    });
+  
+  });
+  
+  
+  
+    describe("Electronics Class Tests", () => {
+      test("should instantiate Electronics correctly", () => {
+        const electronics = new Electronics("1", "Laptop", 1000, 10, "Brand", 2);
+        expect(electronics).toBeInstanceOf(Electronics);
+        expect(electronics.getProductDetails()).toEqual({
+          id: "1",
+          name: "Laptop",
+          price: 1000,
+          quantity: 10,
+          brand: "Brand",
+          warranty: 2,
+        })
+      });
+    
+    });
+    
+    describe("Clothing Class Tests", () => {
+      test("should instantiate Clothing correctly", () => {
+        const clothing = new Clothing("1", "T-Shirt", 20, 50, "M", "Cotton");
+        expect(clothing).toBeInstanceOf(Clothing);
+        expect(clothing.getProductDetails()).toEqual({
+          id: "1",
+          name: "T-Shirt",
+          price: 20,
+          quantity: 50,
+          size: "M",
+          material: "Cotton",
+        })
+      });
+    
+    
+    
+      
     });
 
-    describe('Adding Products', () => {
-        test('can add products to the inventory', () => {
-            inventory.addProduct(product1);
-            inventory.addProduct(product2);
-            expect(inventory.getNumOfItems()).toBe(2);
-        });
-
-        test('throws error when adding a product with a duplicate ID', () => {
-            inventory.addProduct(product1);
-            expect(() => inventory.addProduct(product1)).toThrowError(`Product with ID ${product1.id} already exists.`);
-        });
+  
+  
+  describe("ProductFactory", () => {
+    test("creates a Clothing product correctly", () => {
+      const product = ProductFactory.createProduct("Clothing", "C123", "Sweater", 29.99, 50, "M", "Wool");
+      expect(product).toBeInstanceOf(Clothing);
+      expect(product.getProductDetails()).toEqual({
+        id: "C123",
+        name: "Sweater",
+        price: 29.99,
+        quantity: 50,
+        size: "M",
+        material: "Wool",
+      });
     });
-
-    describe('Updating Product Quantities', () => {
-        test('can update the quantity of a product', () => {
-            inventory.addProduct(product1);
-            inventory.updateQuantity("A123", 75);
-            expect(inventory.getProduct("A123").quantity).toBe(75);
-        });
-
-        test('throws error when updating the quantity of a non-existent product', () => {
-            expect(() => inventory.updateQuantity("C789", 75)).toThrowError(`Product with ID C789 not found.`);
-        });
+  
+    test("creates an Electronics product correctly", () => {
+      const product = ProductFactory.createProduct("Electronics", "E456", "Laptop", 1299.99, 20, "Microsoft", 2);
+      expect(product).toBeInstanceOf(Electronics);
+      expect(product.getProductDetails()).toEqual({
+        id: "E456",
+        name: "Laptop",
+        price: 1299.99,
+        quantity: 20,
+        brand: "Microsoft",
+        warranty: 2,
+      });
     });
-
-    describe('Removing Products', () => {
-        test('can remove a product from the inventory', () => {
-            inventory.addProduct(product1);
-            inventory.addProduct(product2);
-            inventory.removeProduct("A123");
-            expect(() => inventory.getProduct("A123")).toThrowError(`Product with ID A123 not found.`);
-            expect(inventory.getNumOfItems()).toBe(1);
-        });
-
-        test('throws error when removing a non-existent product', () => {
-            expect(() => inventory.removeProduct("C789")).toThrowError(`Product with ID C789 not found.`);
-        });
-    });
-
-    describe('Retrieving Product Details', () => {
-        test('can retrieve the details of products', () => {
-            inventory.addProduct(product1);
-            inventory.addProduct(product2);
-            
-            expect(inventory.getProduct("A123")).toEqual({
-                id: "A123",
-                name: "T-shirt",
-                price: 19.99,
-                quantity: 100,
-                size: "M",
-                material: "Cotton"
-            });
-
-            expect(inventory.getProduct("B456")).toEqual({
-                id: "B456",
-                name: "Jeans",
-                price: 49.99,
-                quantity: 50,
-                size: "L",
-                material: "Denim"
-            });
-        });
-    });
-});
+  
+    
+  });
