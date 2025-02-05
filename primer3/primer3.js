@@ -3,38 +3,38 @@ class Node {
     this.text = text;
     this.timestamp = timestamp;
     this.author = author;
-    this.next = null;
+    this.next = null; //next node should be empty
   }
 }
 
 function createLinkedList(posts) {
-  // Step 1: Check if posts is a valid array with at least one element
+  // checks to see if the list is empty or not
   if (!Array.isArray(posts) || posts.length === 0) {
     return null;  // Return null for empty lists
   }
 
   let head = null;
-  let tail = null;
+  let pointer = null;
 
-  // Step 2: Iterate through each post and validate its structure
+  // checks the formatting of each post
   posts.forEach(post => {
     if (typeof post.text !== "string" || !post.text.trim()) {
-      throw new Error("Each post must have a non-empty 'text' property.");
+      throw new Error("Each post must have a writing");
     }
     if (typeof post.timestamp !== "string" || isNaN(Date.parse(post.timestamp))) {
-      throw new Error("Each post must have a valid 'timestamp' property.");
+      throw new Error("invalid timestamp.");
     }
     if (typeof post.author !== "string" || !post.author.trim()) {
-      throw new Error("Each post must have a non-empty 'author' property.");
+      throw new Error("Each post must have an'author.");
     }
 
     const newNode = new Node(post.text, post.timestamp, post.author);
     if (!head) {
       head = newNode;
-      tail = newNode;
+      pointer = newNode;
     } else {
-      tail.next = newNode;
-      tail = newNode;
+      pointer.next = newNode;
+      pointer = newNode;
     }
   });
 
@@ -42,16 +42,16 @@ function createLinkedList(posts) {
 }
 
 function searchSocialMediaFeed(feed, keyword) {
-  // Step 1: Handle the case where the feed is empty
-  if (!feed) return [];  // Return empty array for empty feed
+  // checks for an emoty feed
+  if (!feed) return []; 
 
   const results = [];
-  const normalizedKeyword = keyword.toLowerCase();  // Normalize the keyword for case-insensitive search
+  const sensitiveWord = keyword.toLowerCase();  // use to make the keyword not case sensetive
 
   let currentNode = feed;
   while (currentNode !== null) {
-    const normalizedText = currentNode.text.toLowerCase();  // Normalize post text for case-insensitive search
-    if (normalizedText.includes(normalizedKeyword)) {
+    const sensitiveText = currentNode.text.toLowerCase();  // used in order to not make search case sensetive
+    if (sensitiveText.includes(sensitiveWord)) {
       results.push({
         text: currentNode.text,
         timestamp: currentNode.timestamp,
@@ -67,3 +67,4 @@ function searchSocialMediaFeed(feed, keyword) {
 
 
 export {createLinkedList, searchSocialMediaFeed};
+// had to remove 'default' because of structure

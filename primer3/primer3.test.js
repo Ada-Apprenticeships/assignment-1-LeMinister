@@ -33,7 +33,10 @@ describe('Social Media Feed Search', () => {
       const feed = createLinkedList(posts);
       let current = feed;
       posts.forEach(post => {
-        expect(current.data).toEqual(post);
+        expect(current.text).toEqual(post.text);
+        expect(current.timestamp).toEqual(post.timestamp);
+        expect(current.author).toEqual(post.author);
+
         current = current.next;
       });
       expect(current).toBeNull();

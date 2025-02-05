@@ -1,43 +1,45 @@
-// Inventory.js
+import Product from './Product.js';
+
 class Inventory {
-  constructor() {
-    this.products = new Map();  // Store products by their ID
-  }
-
-  addProduct(product) {
-    if (!(product instanceof Product)) {
-      throw new Error("Only products of type Product or its subclasses can be added.");
+    constructor() {
+        this.products = new Map();  // Store products by their ID
     }
-    this.products.set(product.id, product);
-  }
 
-  updateQuantity(id, quantity) {
-    const product = this.products.get(id);
-    if (product) {
-      product.quantity = quantity;
-    } else {
-      throw new Error("Product not found.");
+    addProduct(product) {
+        if (!(product instanceof Product)) {
+            throw new Error("Only products of type Product or its subclasses can be added.");
+        }
+        if (this.products.has(product.id)) {
+            throw new Error(`Product ${product.id} already exists.`);
+        }
+        this.products.set(product.id, product);
     }
-  }
 
-  getProduct(id) {
-    return this.products.get(id);
-  }
-
-  removeProduct(id) {
-    if (this.products.has(id)) {
-      this.products.delete(id);
-    } else {
-      throw new Error("Product not found.");
+    updateQuantity(id, quantity) {
+        const product = this.products.get(id);
+        if (!product) {
+            throw new Error(`Product ${id} isn't found.`);
+        }
+        product.quantity = quantity;
     }
-  }
 
-  getNumOfItems() {
-    return this.products.size;
-  }
+    getProduct(id) {
+        if (!this.products.has(id)) {
+            throw new Error(`Product ${id} isn't found.`);
+        }
+        return this.products.get(id).getProductDetails();
+    }
+
+    removeProduct(id) {
+        if (!this.products.has(id)) {
+            throw new Error(`Product ${id} isn't found.`);
+        }
+        this.products.delete(id);
+    }
+
+    getNumOfItems() {
+        return this.products.size;
+    }
 }
-
-module.exports = Inventory;
-
 
 export default Inventory;

@@ -1,19 +1,20 @@
 function temperatureConversion(temperature, fromScale, toScale) {
+   //  checks if it is a valid number 
     if (isNaN(temperature)|| temperature== null) {
         throw new Error('Temperature must be a numeric value');
         //console.log('Not a valid number');
         //return null;
     } else {
-        temperature = parseFloat(temperature); 
+        temperature = parseFloat(temperature); //used to convert all valid numbers to a float
     }
 
-    
+    // converts both scales answers to lowercase
     fromScale = fromScale.toLowerCase();
     toScale = toScale.toLowerCase();
     
     //let result=0
     let result;
-
+  //conversion calculations
     if (fromScale === toScale) {
         result = temperature 
         return result;
