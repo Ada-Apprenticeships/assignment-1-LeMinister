@@ -17,8 +17,10 @@ describe('Social Media Feed Search', () => {
       
       const feed = createLinkedList(posts);
       expect(feed).toBeTruthy();
-      expect(feed.next).toBeNull();
-      expect(feed.data).toEqual(posts[0]);
+      expect(feed.next).toBeNull(); // Make sure next is null for a single post
+      expect(feed.text).toEqual(posts[0].text);  // Use text instead of data
+      expect(feed.timestamp).toEqual(posts[0].timestamp);  // Use timestamp instead of data
+      expect(feed.author).toEqual(posts[0].author);  // Use author instead of data
     });
 
     test('should create a linked list with multiple posts in correct order', () => {
@@ -157,3 +159,4 @@ describe('Social Media Feed Search', () => {
     });
   });
 });
+

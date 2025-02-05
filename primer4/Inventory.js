@@ -1,43 +1,43 @@
+// Inventory.js
 class Inventory {
-  #products;
-
   constructor() {
-    this.#products = new Map();
+    this.products = new Map();  // Store products by their ID
   }
 
   addProduct(product) {
-    if (this.#products.has(product.id)) {
-      throw new Error(`Product with ID ${product.id} already exists.`);
+    if (!(product instanceof Product)) {
+      throw new Error("Only products of type Product or its subclasses can be added.");
     }
-    this.#products.set(product.id, product);
+    this.products.set(product.id, product);
   }
 
   updateQuantity(id, quantity) {
-    const product = this.#products.get(id);
-    if (!product) {
-      throw new Error(`Product with ID ${id} not found.`);
+    const product = this.products.get(id);
+    if (product) {
+      product.quantity = quantity;
+    } else {
+      throw new Error("Product not found.");
     }
-    product.quantity = quantity;
   }
 
   getProduct(id) {
-    const product = this.#products.get(id);
-    if (!product) {
-      throw new Error(`Product with ID ${id} not found.`);
-    }
-    return product.getProductDetails();
+    return this.products.get(id);
   }
 
   removeProduct(id) {
-    if (!this.#products.has(id)) {
-      throw new Error(`Product with ID ${id} not found.`);
+    if (this.products.has(id)) {
+      this.products.delete(id);
+    } else {
+      throw new Error("Product not found.");
     }
-    this.#products.delete(id);
   }
 
   getNumOfItems() {
-    return this.#products.size;
+    return this.products.size;
   }
 }
+
+module.exports = Inventory;
+
 
 export default Inventory;
