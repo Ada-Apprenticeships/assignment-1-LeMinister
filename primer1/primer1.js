@@ -21,11 +21,3 @@ function temperatureConversion(temperature, fromScale, toScale){
 
 
 }
-
-
-
-export default temperatureConversion;
-
-
-
-
